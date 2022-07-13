@@ -1,0 +1,3 @@
+com\isimtl\authentication\PasswordHasher.class
+com\isimtl\authentication\PasswordResult.class
+com\isimtl\authentication\HashedPassword.class
