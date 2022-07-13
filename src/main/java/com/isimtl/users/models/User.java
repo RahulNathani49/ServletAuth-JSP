@@ -14,6 +14,7 @@ import java.time.LocalDate;
  * @author isi
  */
 public class User {
+    
     private String username;
     HashedPassword password;
     private String name;
@@ -51,32 +52,29 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public User(String username, String password, String confirmPassword, String name, LocalDate dateOfBirth) throws UserException {
-        if (username==null || "".equals(username)) {
-            throw new UserException("Username must not be null");
+    public User(String username, HashedPassword password, String name, LocalDate dateOfBirth) throws UserException { 
+          if (username==null || username.isEmpty()) { 
+            throw new UserException("Username was empty");
         }
-        if (password==null || "".equals(password)) {
-            throw new UserException("password must not be null");
-        }
-        if (!confirmPassword.equals(password)) {
-            throw new UserException("confirmpassword must be same as password");
-        }
-        if (name==null || "".equals(name)) {
-            throw new UserException("Name must not be null");
-        }
-        if (dateOfBirth==null) {
-            throw new UserException("LocalDate of Birth must not be null");
+        if (password==null) {
+            throw new UserException("Password was empty");
         }
         
+        if (name==null || "".equals(name)) {
+            throw new UserException("Name must not be empty");
+        }
+        if (dateOfBirth.isAfter(LocalDate.now())) {
+            throw new UserException("Date of birth is a future date");  
+        }
         this.username = username;
-        this.password = PasswordHasher.hashPassword(password);
+        this.password = password;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
     }
 
     @Override
     public String toString() {
-        return username; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        return username; 
     }
     
     

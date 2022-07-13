@@ -4,7 +4,11 @@
     Author     : isi
 --%>
 
+<%@page import="com.isimtl.users.services.userServices"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% userServices service = (userServices)request.getAttribute("service"); %>
+<% request.setAttribute("service",service);%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +21,7 @@
   <div class="card-body">
     <h5 class="card-title">Welcome <%= request.getAttribute("name") %></h5>
     <p class="card-text">Please Login</p>
-    <a href="login.jsp" class="btn btn-success">Login</a>
+    <a href="Login" class="btn btn-success">Login</a>
   </div>
 </div>
     </body>

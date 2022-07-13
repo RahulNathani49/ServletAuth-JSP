@@ -2,3 +2,4 @@ com\isimtl\users\services\userServices.class
 com\isimtl\users\controllers\Signup.class
 com\isimtl\users\models\User.class
 com\isimtl\users\exceptions\UserException.class
+com\isimtl\users\controllers\Login.class

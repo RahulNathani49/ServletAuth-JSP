@@ -9,13 +9,6 @@ import com.isimtl.users.models.User;
 import com.isimtl.users.services.userServices;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author isi
  */
-@WebServlet(name = "Signup", urlPatterns = {"/Signup",""})
-public class Signup extends HttpServlet {
-    userServices service = new userServices();
+@WebServlet(name = "Login", urlPatterns = {"/Login"})
+public class Login extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,12 +32,9 @@ public class Signup extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException {
-            
-            
-        
-        }
-    
+            throws ServletException, IOException {
+       
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -58,10 +48,7 @@ public class Signup extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         String clicked = request.getParameter("submit");
-         if (!"true".equals(clicked)) {
-                request.getRequestDispatcher("WEB-INF/signup.jsp").forward(request, response);
-           }
+       request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
     }
 
     /**
@@ -76,27 +63,22 @@ public class Signup extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-            String message = "You must provide ";
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            String confirmpassword = request.getParameter("confirmpassword");
-            String name = request.getParameter("name");
-            String dobstring = request.getParameter("dateofbirth");
-          
-             
-        try {
-            User user = service.addUser(username, password, confirmpassword, name,dobstring);
-            request.setAttribute("name",username);
-            request.getRequestDispatcher("WEB-INF/welcome.jsp").forward(request, response);
-        } catch (UserException ex) {
+        userServices service = new userServices();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        try{     
+            User user = service.checkLoginAuth(username,password);
+            request.setAttribute("loggeduser", user);
+            request.getRequestDispatcher("WEB-INF/portal.jsp").forward(request, response);
+
+        }catch(UserException ex){
           String exceptionMessage = ex.getMessage();
           request.setAttribute("message", exceptionMessage);
           request.setAttribute("username", username);
-          request.setAttribute("name", name);
-          request.getRequestDispatcher("WEB-INF/signup.jsp").forward(request, response);
-
+          request.setAttribute("password", password);
+          request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         }
-                
+       
     }
 
     /**
